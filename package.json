@@ -1,7 +1,7 @@
 {
   "name": "@workshop/app-components",
   "scripts": {
-    "start": "webpack serve --port 8084",
+    "start": "webpack serve --port 8084 --env dev",
     "start:standalone": "webpack serve --env standalone",
     "build": "webpack --mode=production",
     "analyze": "webpack --mode=production --env analyze",
@@ -15,7 +15,8 @@
   },
   "peerDependencies": {
     "react-router": "*",
-    "react-router-dom": "*"
+    "react-router-dom": "*",
+    "redux": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
