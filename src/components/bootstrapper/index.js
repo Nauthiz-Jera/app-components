@@ -16,9 +16,9 @@ const DefaultWrapper = ({ children, AdditionalWrappers }) => {
 
 const BootStrapper = ({ appName, routes, AdditionalWrappers, store }) => {
   if (appName && store) {
-    console.log("rootStore: ", rootStore);
     rootStore.add(appName, store);
   }
+
   return (
     <Provider store={rootStore.store}>
       <DefaultWrapper AdditionalWrappers={AdditionalWrappers}>
