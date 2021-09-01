@@ -19,6 +19,7 @@ module.exports = (webpackConfigEnv, argv) => {
       "redux",
       "react-redux",
       "@workshop/app-core-utils",
+      "@workshop/app-nav",
     ],
   });
 };

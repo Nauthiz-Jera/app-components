@@ -1,7 +1,9 @@
 import React, { Suspense } from "react";
-import { Provider } from "react-redux";
-import { rootStore } from "@workshop/app-core-utils";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+
+import { rootStore } from "@workshop/app-core-utils";
+import { useNavState } from "@workshop/app-nav";
 
 const DefaultWrapper = ({ children, AdditionalWrappers }) => {
   if (AdditionalWrappers) {
@@ -15,6 +17,8 @@ const DefaultWrapper = ({ children, AdditionalWrappers }) => {
 };
 
 const BootStrapper = ({ appName, routes, AdditionalWrappers, store }) => {
+  const [{ isMenuOpen }] = useNavState();
+  const adjustSize = isMenuOpen ? "175px" : "75px";
   if (appName && store) {
     rootStore.add(appName, store);
   }
@@ -22,7 +26,12 @@ const BootStrapper = ({ appName, routes, AdditionalWrappers, store }) => {
   return (
     <Provider store={rootStore.store}>
       <DefaultWrapper AdditionalWrappers={AdditionalWrappers}>
-        <div style={{ width: "calc(100% - 175px)", marginLeft: "175px" }}>
+        <div
+          style={{
+            width: `calc(100% - ${adjustSize})`,
+            marginLeft: adjustSize,
+          }}
+        >
           <Switch>
             {routes.map(({ path, Component }) => {
               const routeKey = `app-${appName}-${path}`;
