@@ -7,19 +7,15 @@ import { useNavState } from "@workshop/app-nav";
 
 const DefaultWrapper = ({ children, AdditionalWrappers }) => {
   if (AdditionalWrappers) {
-    return (
-      <Router>
-        <AdditionalWrappers>{children}</AdditionalWrappers>
-      </Router>
-    );
+    return <AdditionalWrappers>{children}</AdditionalWrappers>;
   }
-  return <Router>{children}</Router>;
+  return children;
 };
 
 const BootStrapper = ({ appName, routes, AdditionalWrappers, store }) => {
   const [{ isMenuOpen }] = useNavState();
   const adjustSize = isMenuOpen ? "175px" : "75px";
-  if (appName && store) {
+  if (store) {
     rootStore.add(appName, store);
   }
 
@@ -32,18 +28,25 @@ const BootStrapper = ({ appName, routes, AdditionalWrappers, store }) => {
             marginLeft: adjustSize,
           }}
         >
-          <Switch>
-            {routes.map(({ path, Component }) => {
-              const routeKey = `app-${appName}-${path}`;
-              return (
-                <Suspense key={routeKey} fallback={<div>loading...</div>}>
-                  <Route path={path}>
-                    <Component />
-                  </Route>
-                </Suspense>
-              );
-            })}
-          </Switch>
+          <Suspense fallback={<div>loading...</div>}>
+            <Router basename="/">
+              <Switch>
+                <Route exact path="/" />
+                {routes.map(({ exact, path, Component }) => {
+                  const routeKey = `app-${appName}-${path}`;
+                  return (
+                    <Route
+                      key={routeKey}
+                      exact={!!exact}
+                      path={`/${appName}${path}`}
+                    >
+                      <Component />
+                    </Route>
+                  );
+                })}
+              </Switch>
+            </Router>
+          </Suspense>
         </div>
       </DefaultWrapper>
     </Provider>
